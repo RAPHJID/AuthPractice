@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AuthPractice.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AuthPractice.Models.DTOs;
 
 
 namespace AuthPractice.Controllers
@@ -53,6 +54,20 @@ namespace AuthPractice.Controllers
 
             var token = GenerateJwtToken(user);
             return Ok(new { token });
+        }
+
+        [Authorize]
+        [HttpGet("secret")]
+        public IActionResult GetSecret()
+        {
+            return Ok("This is protected data. You must be logged in to see this.");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("public")]
+        public IActionResult GetPublic()
+        {
+            return Ok("This is public data. Anyone can see this.");
         }
 
         private string GenerateJwtToken(IdentityUser user)
