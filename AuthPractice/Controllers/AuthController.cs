@@ -56,7 +56,7 @@ namespace AuthPractice.Controllers
             return Ok(new { token });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("secret")]
         public IActionResult GetSecret()
         {
